@@ -1,0 +1,9 @@
+steps:
+  - script: echo $(containerRegistryPassword) | docker login -u $(containerRegistry) --password-stdin $(containerRegistry).azurecr.io
+    displayName: "Docker login"
+
+  - script: docker build -t $(containerRegistry).azurecr.io/${{parameters.imageName}} -f ${{parameters.dockerfilePath}} ${{parameters.dockerContext}}
+    displayName: "Docker build ${{parameters.imageName}}"
+
+  - script: docker push $(containerRegistry).azurecr.io/${{parameters.imageName}}
+    displayName: "Docker push ${{parameters.imageName}}"
